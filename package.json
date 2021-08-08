@@ -1,0 +1,47 @@
+{
+  "name": "mediawiki-inpageedit",
+  "version": "15.0.0-alpha.0",
+  "description": "Next version of InPageEdit",
+  "author": "Dragon-Fish <dragon-fish@qq.com>",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/InPageEdit.umd.js",
+  "scripts": {
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "vue": "^3.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^16.3.3",
+    "@vitejs/plugin-vue": "^1.2.5",
+    "@vue/compiler-sfc": "^3.1.5",
+    "@vuedx/typescript-plugin-vue": "^0.7.4",
+    "autoprefixer": "^10.3.1",
+    "naive-ui": "^2.15.5",
+    "postcss": "^8.3.5",
+    "prettier": "^2.3.2",
+    "pug": "^3.0.2",
+    "stylus": "^0.54.8",
+    "types-mediawiki": "^1.2.0",
+    "typescript": "^4.3.5",
+    "vite": "^2.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inpageedit/inpageedit-next.git"
+  },
+  "keywords": [
+    "mediawiki",
+    "mediawiki-gadget",
+    "inpageedit"
+  ],
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/inpageedit/inpageedit-next/issues"
+  },
+  "homepage": "https://ipe.js.org"
+}
