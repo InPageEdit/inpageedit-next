@@ -16,6 +16,10 @@ parserOptions:
   extraFileExtensions:
     - .vue
   ecmaVersion: 12
-rules: {}
+rules: 
+  indent: ['error', 2, { SwitchCase: 1 }]
+  linebreak-style: ['warn', 'windows']
+  quotes: ['error', 'single']
+  semi: ['error', 'never']
 globals:
   mw: writeable
