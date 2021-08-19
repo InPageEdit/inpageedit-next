@@ -28,10 +28,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="stylus">
+<style scoped lang="sass">
 .toolbox
-  position fixed
-  bottom 2rem
-  right 2rem
-  z-index 90
+  position: fixed
+  bottom: 2rem
+  right: 2rem
+  z-index: 90
 </style>

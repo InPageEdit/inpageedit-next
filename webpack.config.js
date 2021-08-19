@@ -42,8 +42,8 @@ module.exports = {
         ],
       },
       {
-        test: /\.styl(?:us)?$/,
-        use: ['style-loader', 'css-loader', 'stylus-loader'],
+        test: /\.sass$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },
