@@ -1,0 +1,21 @@
+env:
+  browser: true
+  commonjs: true
+  es2021: true
+parser:
+  'vue-eslint-parser'
+plugins:
+  - '@typescript-eslint'
+extends:
+  - 'eslint:recommended'
+  - 'plugin:@typescript-eslint/recommended'
+  - 'plugin:vue/vue3-recommended'
+  - 'prettier'
+parserOptions:
+  parser: '@typescript-eslint/parser'
+  extraFileExtensions:
+    - .vue
+  ecmaVersion: 12
+rules: {}
+globals:
+  mw: writeable
