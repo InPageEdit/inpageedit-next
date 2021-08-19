@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function deepen(modifyString: (source: string) => string) {
   function modifyObject<T extends unknown>(source: T): T {
     if (typeof source !== 'object' || !source) return source
@@ -35,7 +36,7 @@ export const snakeCase = deepen((source) =>
 export const camelize = camelCase
 export const hyphenate = paramCase
 
-export function capitalize(source: string) {
+export function capitalize(source: string): string {
   return source.charAt(0).toUpperCase() + source.slice(1)
 }
 
@@ -52,20 +53,20 @@ with (context) {
 }`
 ) as (template: string, context: object) => string
 
-export function escapeRegExp(source: string) {
+export function escapeRegExp(source: string): string {
   return source.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d')
 }
 
-export function trimSlash(source: string) {
+export function trimSlash(source: string): string {
   return source.replace(/\/$/, '')
 }
 
-export function sanitize(source: string) {
+export function sanitize(source: string): string {
   if (!source.startsWith('/')) source = '/' + source
   return trimSlash(source)
 }
 
-export function template(path: string | string[], ...params: any[]) {
+export function template(path: string | string[], ...params: any[]): string {
   if (!Array.isArray(path)) path = [path]
   for (const item of path) {
     const source = template.get(item)
@@ -96,7 +97,7 @@ export namespace template {
 
   const store: Store = {}
 
-  export function set(path: string, value: Node) {
+  export function set(path: string, value: Node): void {
     const seg = path.split('.')
     let node: Node = store
     while (seg.length > 1) {
@@ -105,7 +106,7 @@ export namespace template {
     deepAssign(node, { [seg[0]]: value })
   }
 
-  export function get(path: string) {
+  export function get(path: string): string | undefined {
     const seg = path.split('.')
     let node: Node = store
     do {
@@ -114,7 +115,7 @@ export namespace template {
     if (typeof node === 'string') return node
   }
 
-  export function format(source: string, ...params: any[]) {
+  export function format(source: string, ...params: any[]): string {
     if (params[0] && typeof params[0] === 'object') {
       source = interpolate(source, params[0])
     }
@@ -129,11 +130,11 @@ export namespace template {
     return result + source
   }
 
-  export function quote(content: any) {
+  export function quote(content: any): string {
     return get('basic.left-quote') + content + get('basic.right-quote')
   }
 
-  export function brace(items: any[]) {
+  export function brace(items: any[]): string {
     if (!items.length) return ''
     return (
       get('basic.left-brace') +

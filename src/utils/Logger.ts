@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 class Logger {
   name: string
   prefix: string
@@ -11,15 +12,15 @@ class Logger {
     this.log = this.info
   }
 
-  info(...msg: any) {
+  info(...msg: any[]): void {
     console.info(this.prefix, '[I]', this.name, ...msg)
   }
 
-  warn(...msg: any) {
+  warn(...msg: any[]): void {
     console.warn(this.prefix, '[W]', this.name, ...msg)
   }
 
-  error(...msg: any) {
+  error(...msg: any[]): void {
     console.error(this.prefix, '[E]', this.name, ...msg)
   }
 }
