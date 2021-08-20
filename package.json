@@ -2,13 +2,16 @@
   "name": "mediawiki-inpageedit",
   "version": "15.0.0-alpha.0",
   "description": "Next version of InPageEdit",
-  "author": "Dragon-Fish <dragon-fish@qq.com>",
+  "contributors": [
+    "Dragon-Fish <dragon-fish@qq.com>",
+    "MysticNebula70 <alpha513001@gmail.com>"
+  ],
   "files": [
     "dist"
   ],
-  "main": "./dist/InPageEdit.umd.js",
+  "main": "./dist/main.js",
   "scripts": {
-    "build": "vite build",
+    "build": "yarn lint && yarn pretty && webpack",
     "lint": "eslint ./src",
     "pretty": "prettier --write ./src",
     "dev": "webpack --watch"
@@ -41,10 +44,7 @@
     "webpack": "^5.50.0",
     "webpack-cli": "^4.8.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/inpageedit/inpageedit-next.git"
-  },
+  "repository": "github:inpageedit/inpageedit-next",
   "keywords": [
     "mediawiki",
     "mediawiki-gadget",
