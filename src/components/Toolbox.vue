@@ -1,12 +1,16 @@
 <template lang="pug">
 .toolbox
-  NButton(type="primary") {{ template('core.quick_edit') }}
+  n-button(
+    type="primary"
+    @click="moduleEnable.quickEdit = true"
+  ) {{ template('core.quick_edit') }}
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { NButton } from 'naive-ui'
 import { template } from '../utils'
+import { moduleEnable } from '../App.vue'
 
 export default defineComponent({
   components: {
@@ -15,6 +19,7 @@ export default defineComponent({
   data() {
     return {
       template,
+      moduleEnable,
     }
   },
   method: {
@@ -31,7 +36,7 @@ export default defineComponent({
 <style scoped lang="sass">
 .toolbox
   position: fixed
+  left: 2rem
   bottom: 2rem
-  right: 2rem
   z-index: 90
 </style>
