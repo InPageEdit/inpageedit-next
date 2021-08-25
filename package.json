@@ -17,6 +17,7 @@
     "dev": "webpack --watch"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "vue": "^3.2.4"
   },
   "devDependencies": {
