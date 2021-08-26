@@ -4,7 +4,7 @@ n-modal.quick-redirect(
   preset="card"
   :bordered="false"
   title="Quick Redirect"
-  :style="{width: '40vw'}"
+  :style="{width: '30vw'}"
 )
   .redirect-form
     n-form(
@@ -30,8 +30,8 @@ n-modal.quick-redirect(
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { mwApi } from '../../utils/mediawiki'
-import { Logger } from '../../utils'
+import { mwApi } from '../utils/mediawiki'
+import { Logger } from '../utils'
 const logger = new Logger('QuickRedirect')
 
 import { ApiEditPageParams } from 'types-mediawiki/api_params'
@@ -71,7 +71,6 @@ export default defineComponent({
         title: this.formValue.redirectFrom,
         text: `#REDIRECT [[:${this.formValue.redirectTo}]]`,
         summary: `[InPageEdit] Quick redirect to ${this.formValue.redirectTo}`,
-        token: '',
         formatversion: '2',
       }
       if (this.formValue.settings.minorEdit) {
