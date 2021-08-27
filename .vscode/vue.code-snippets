@@ -13,20 +13,15 @@
       "$0",
       "</template>",
       "",
-      "<script lang=\"ts\">",
-      "import { defineComponent } from 'vue'",
+      "<script setup lang=\"ts\">",
+      "import { defineComponent, defineProps, ref } from 'vue'",
       "",
-      "export default defineComponent({",
-      "  components: {},",
-      "  data() {",
-      "    return {}",
-      "  },",
-      "  method: {},",
-      "  mounted() {},",
-      "})",
+      "// const components = defineComponent()",
+      "// const props = defineProps()",
+      "",
       "</script>",
       "",
-      "<style scoped lang=\"stylus\"></style>"
+      "<style scoped lang=\"sass\"></style>"
     ],
     "description": "Init vue components"
   }

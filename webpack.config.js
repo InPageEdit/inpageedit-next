@@ -11,6 +11,7 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js'],
   },
   mode: 'development',
+  devtool: 'source-map',
   watchOptions: {
     ignored: /dist/,
   },

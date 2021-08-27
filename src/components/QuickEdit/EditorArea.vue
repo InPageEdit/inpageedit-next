@@ -1,111 +1,164 @@
 <template lang="pug">
 .editorArea
-  n-spin(:show="loading")
-    n-alert(type="error" v-if="error") {{ error }}
-    n-form(
-      :model="formValue"
-      :disabled="formDisabled"
-      label-placement="top"
-    )
-      n-form-item(label="源代码" path="wikitext")
+  n-spin(:show='loading || submitLoading')
+    n-alert(type='warning', v-if='error') {{ error }}
+    n-form(:model='formValue', label-placement='top')
+      n-form-item(label='源代码', path='wikitext')
         n-input(
-          type="textarea"
-          placeholder=""
-          :autosize="{ minRows: 5, maxRows: 20 }"
-          v-model:value="formValue.wikitext"
+          type='textarea',
+          placeholder='',
+          :autosize='{ minRows: 10 }',
+          v-model:value='formValue.wikitext'
         )
-      n-form-item(label="编辑摘要" path="settings")
+      n-form-item(label='编辑摘要', path='settings')
         n-input(
-          placeholder="// Edit via InPageEdit@next ~"
-          v-model:value="formValue.settings.summary"
+          size='small',
+          placeholder='// Edit via InPageEdit@next ~',
+          v-model:value='formValue.summary'
         )
-      .editorSettings
+      n-form-item(:show-label='false')
         n-space
-          n-checkbox(
-            v-model:checked="formValue.settings.minor"
-          ) 标记为小编辑
-          n-checkbox(
-            v-model:checked="formValue.settings.watchList"
-          ) 添加到监视列表
-      .editorSubmit
-        n-button(type="primary" @click="submit") 提交
+          n-checkbox(v-model:checked='formValue.minorEdit') 标记为小编辑
+          n-checkbox(v-model:checked='formValue.addWatch') 添加到监视列表
+      n-form-item(:show-label='false')
+        n-space
+          n-popconfirm(
+            @positive-click='submit',
+            positive-text='确定',
+            :negative-text='null'
+          )
+            template(#trigger)
+              n-button(type='primary', :loading='submitLoading') {{ submitLoading ? "正在保存" : "保存编辑" }}
+            | 确定要保存编辑吗？
+          n-button 预览变更
 
-  pre.formValue {{ JSON.stringify(formValue, null, 2) }}
+  details
+    pre.formValue {{ JSON.stringify(formValue, null, 2) }}
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { mwApi } from '../../utils/mediawiki'
+<script lang="ts" setup>
+import { defineComponent, defineProps, h, ref } from 'vue'
+import { mwApi, user } from '../../utils/mediawiki'
 import { Logger } from '../../utils'
 const logger = new Logger('QuickEdit')
+const message = useMessage()
+const dialog = useDialog()
 
-import { MwApiParse } from '../../types'
+import { MwApiParseResult, MwApiQueryPagesResult } from '../../types'
+import { useDialog, useMessage } from 'naive-ui'
 
-export default defineComponent({
-  components: {},
-  props: {
-    pageName: {
-      type: String,
-      default: '',
-    },
-  },
-  data() {
-    return {
-      formValue: {
-        wikitext: '',
-        settings: {
-          summary: '',
-          minorEdit: true,
-          watchList: true,
-        },
-      },
-      error: '',
-      loading: false,
-      formDisabled: true,
-      pageParse: {} as any,
-      pageQuery: {} as any,
-    }
-  },
-  mounted() {
-    this.init()
-  },
-  methods: {
-    init() {
-      this.formDisabled = true
-      this.loading = true
-      this.getPageParseData()
-    },
-    async getPageParseData() {
-      mwApi
-        .get({
-          format: 'json',
-          action: 'parse',
-          page: this.pageName,
-          prop: 'wikitext|langlinks|categories|templates|images|sections',
-        })
-        .then(
-          (data) => {
-            const { parse } = data as MwApiParse
-            this.formValue.wikitext = parse.wikitext['*']
-            this.formDisabled = false
-          },
-          (errCode, err) => {
-            this.error = err
-            console.log(err)
-          }
-        )
-        .always(() => {
-          this.loading = false
-        })
-    },
-    getPageQueryData() {
-      //
-    },
-    submit() {
-      logger.info('submit', { formValue: this.formValue })
-    },
-  },
+const props =
+  defineProps<{
+    pageName: string
+    tabName: string
+  }>()
+
+const formValue = ref({
+  wikitext: '',
+  summary: '',
+  minorEdit: false,
+  addWatch: !!user.options.get('watchdefault'),
 })
+const error = ref('')
+const loading = ref(false)
+const submitLoading = ref(false)
+const pageParse = ref({} as MwApiParseResult)
+const pageQuery = ref({} as MwApiQueryPagesResult)
+
+const init = () => {
+  loading.value = true
+  getPageParseData()
+}
+
+const getPageParseData = async () => {
+  mwApi
+    .get({
+      format: 'json',
+      action: 'parse',
+      page: props.pageName,
+      prop: 'wikitext|langlinks|categories|templates|images|sections',
+    })
+    .then(
+      (data) => {
+        loading.value = false
+        pageParse.value = data as MwApiParseResult
+        const { parse } = pageParse.value
+        formValue.value.wikitext = parse.wikitext['*'] + '\n'
+        getPageQueryData()
+      },
+      (errCode, { error: err }) => {
+        loading.value = false
+        error.value = err.info
+        logger.warn(err)
+      }
+    )
+}
+
+const getPageQueryData = () => {
+  mwApi
+    .get({
+      action: 'query',
+      prop: 'revisions|info',
+      inprop: 'protection',
+      format: 'json',
+      pageids: [pageParse.value.parse.pageid],
+    })
+    .then(
+      (data) => {
+        loading.value = false
+        pageQuery.value = data as MwApiQueryPagesResult
+        logger.log('queryData', data)
+      },
+      (errCode, { error: err }) => {
+        loading.value = false
+        error.value = err.info
+        logger.warn(err)
+      }
+    )
+}
+const submit = () => {
+  submitLoading.value = true
+
+  const parse = pageParse.value.parse
+  const query = pageQuery.value.query
+  const thisPage = query.pages[parse.pageid]
+
+  logger.info('submit', { formValue: formValue.value })
+
+  mwApi
+    .postWithEditToken({
+      action: 'edit',
+      starttimestamp: thisPage.revisions[0].timestamp,
+      basetimestamp: thisPage.touched,
+      // baserevid: thisPage.revid,
+      title: parse.title,
+      errorformat: 'plaintext',
+      text: formValue.value.wikitext,
+      summary: formValue.value.summary,
+      minor: formValue.value.minorEdit,
+      watchlist: formValue.value.addWatch ? 'watch' : 'unwatch',
+    })
+    .then(
+      (data) => {
+        logger.info('submit ok')
+        submitLoading.value = false
+        message.success('保存成功！')
+      },
+      (errCode, { errors: err }) => {
+        logger.info('submit failed', err)
+        dialog.error({
+          title: `保存失败：${errCode}`,
+          content() {
+            return h('div', {}, [h('div', {}, err[0]['*'])])
+          },
+        })
+        submitLoading.value = false
+      }
+    )
+}
+
+// monted
+init()
 </script>
 
-<style scoped lang="stylus"></style>
+<style scoped lang="sass"></style>

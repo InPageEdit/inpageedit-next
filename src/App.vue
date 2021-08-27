@@ -1,41 +1,26 @@
+/* eslint-disable vue/one-component-per-file */
 <template lang="pug">
 //- Containers
 n-loading-bar-provider
   n-message-provider
     n-notification-provider
       n-dialog-provider
-
-        //- Start
-        quick-edit(v-model:enable="enable.quickEdit")
-        //- Inject Toolbox
-        toolbox
+        modules-index
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import Toolbox from './components/Toolbox.vue'
-import QuickEdit from './components/QuickEdit/QuickEdit.vue'
+<script lang="ts" setup>
+import { defineComponent } from 'vue'
+import ModulesIndex from './components/index.vue'
 
 import { template } from './utils'
 
-export const moduleEnable = ref({
-  quickEdit: false,
-})
+const components = defineComponent({ ModulesIndex })
 
-export default defineComponent({
-  components: { QuickEdit, Toolbox },
-  data() {
-    return {
-      enable: moduleEnable,
-    }
-  },
-  mounted() {
-    template.set('core', {
-      quick_edit: '快速编辑',
-    })
-  },
-  methods: {},
+// template
+template.set('core', {
+  quick_edit: '快速编辑',
 })
+console.log('template', template('core.quick_edit'))
 </script>
 
 <style scoped lang="sass"></style>

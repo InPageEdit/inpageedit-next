@@ -1,4 +1,4 @@
-export interface MwApiParse {
+export interface MwApiParseResult {
   parse: {
     title: string
     pageid: number
@@ -26,5 +26,36 @@ export interface MwApiParse {
     wikitext: {
       '*': string
     }
+  }
+}
+
+export interface MwApiQueryPagesResult {
+  batchcomplete: string
+  query: {
+    pages: Record<
+      `${number}`,
+      {
+        pageid: number
+        ns: number
+        title: string
+        revisions: {
+          revid: number
+          parentid: number
+          minor?: ''
+          user: string
+          timestamp: string
+          comment: string
+        }[]
+        contentmodel: string
+        pagelanguage: string
+        pagelanguagehtmlcode: string
+        pagelanguagedir: string
+        touched: string
+        lastrevid: number
+        length: number
+        protection: any[]
+        restrictiontypes: string[]
+      }
+    >
   }
 }
