@@ -47,18 +47,11 @@ const dialog = useDialog()
 import { MwApiParseResult, MwApiQueryPagesResult } from '../../types'
 import { useDialog, useMessage } from 'naive-ui'
 
-<<<<<<< HEAD
 const props =
   defineProps<{
     pageName: string
     tabName: string
   }>()
-=======
-const props = defineProps<{
-  pageName: string
-  tabName: string
-}>()
->>>>>>> dev
 
 const formValue = ref({
   wikitext: '',
@@ -80,29 +73,18 @@ const init = () => {
 const getPageParseData = async () => {
   mwApi
     .get({
-<<<<<<< HEAD
-      format: 'json',
-      action: 'parse',
-      page: props.pageName,
-      prop: 'wikitext|langlinks|categories|templates|images|sections',
-=======
       action: 'parse',
       page: props.pageName,
       prop: 'wikitext|langlinks|categories|templates|images|sections',
       format: 'json',
       formatversion: '2',
->>>>>>> dev
     })
     .then(
       (data) => {
         loading.value = false
         pageParse.value = data as MwApiParseResult
         const { parse } = pageParse.value
-<<<<<<< HEAD
-        formValue.value.wikitext = parse.wikitext['*'] + '\n'
-=======
         formValue.value.wikitext = parse.wikitext + '\n'
->>>>>>> dev
         getPageQueryData()
       },
       (errCode, { error: err }) => {
@@ -141,7 +123,7 @@ const submit = () => {
 
   const parse = pageParse.value.parse
   const query = pageQuery.value.query
-  const thisPage = query.pages[parse.pageid]
+  const thisPage = query.pages[0]
 
   logger.info('submit', { formValue: formValue.value })
 

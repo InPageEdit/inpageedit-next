@@ -86,12 +86,10 @@ const handleTabClose = (name: string) => {
   }
   const index = Number(name.split('-')[1])
   list.splice(index, 1)
-  moduleStates.value.quickEdit.ctx.curTab = `editor-${index - 1}`
+  if (props.ctx.curTab === 'name') {
+    moduleStates.value.quickEdit.ctx.curTab = `editor-${index - 1}`
+  }
 }
 </script>
 
-<<<<<<< HEAD
 <style scoped lang="sass"></style>
-=======
-<style scoped lang="sass"></style>
->>>>>>> dev
