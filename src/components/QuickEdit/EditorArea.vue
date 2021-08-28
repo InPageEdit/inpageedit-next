@@ -47,11 +47,18 @@ const dialog = useDialog()
 import { MwApiParseResult, MwApiQueryPagesResult } from '../../types'
 import { useDialog, useMessage } from 'naive-ui'
 
+<<<<<<< HEAD
 const props =
   defineProps<{
     pageName: string
     tabName: string
   }>()
+=======
+const props = defineProps<{
+  pageName: string
+  tabName: string
+}>()
+>>>>>>> dev
 
 const formValue = ref({
   wikitext: '',
@@ -73,17 +80,29 @@ const init = () => {
 const getPageParseData = async () => {
   mwApi
     .get({
+<<<<<<< HEAD
       format: 'json',
       action: 'parse',
       page: props.pageName,
       prop: 'wikitext|langlinks|categories|templates|images|sections',
+=======
+      action: 'parse',
+      page: props.pageName,
+      prop: 'wikitext|langlinks|categories|templates|images|sections',
+      format: 'json',
+      formatversion: '2',
+>>>>>>> dev
     })
     .then(
       (data) => {
         loading.value = false
         pageParse.value = data as MwApiParseResult
         const { parse } = pageParse.value
+<<<<<<< HEAD
         formValue.value.wikitext = parse.wikitext['*'] + '\n'
+=======
+        formValue.value.wikitext = parse.wikitext + '\n'
+>>>>>>> dev
         getPageQueryData()
       },
       (errCode, { error: err }) => {
@@ -100,8 +119,9 @@ const getPageQueryData = () => {
       action: 'query',
       prop: 'revisions|info',
       inprop: 'protection',
-      format: 'json',
       pageids: [pageParse.value.parse.pageid],
+      format: 'json',
+      formatversion: '2',
     })
     .then(
       (data) => {
@@ -135,8 +155,10 @@ const submit = () => {
       errorformat: 'plaintext',
       text: formValue.value.wikitext,
       summary: formValue.value.summary,
-      minor: formValue.value.minorEdit,
+      minor: formValue.value.minorEdit, // FIXME: set this to false does not work; should be absent instead
       watchlist: formValue.value.addWatch ? 'watch' : 'unwatch',
+      format: 'json',
+      formatversion: '2',
     })
     .then(
       (data) => {

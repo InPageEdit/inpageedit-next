@@ -90,4 +90,8 @@ const handleTabClose = (name: string) => {
 }
 </script>
 
+<<<<<<< HEAD
 <style scoped lang="sass"></style>
+=======
+<style scoped lang="sass"></style>
+>>>>>>> dev
