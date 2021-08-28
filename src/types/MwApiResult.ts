@@ -78,10 +78,16 @@ export interface MwApiEditResult {
   }
 }
 
+export interface MwApiErrorObject {
+  code: string
+  info: string
+}
+
 export interface MwApiErrorResult {
-  error: {
-    code: string
-    info: string
-    docref: string
-  }
+  error: MwApiErrorObject & { docref: string }
+}
+
+export interface MwApiMultiErrorResult {
+  errors: (MwApiErrorObject & { module: string })[]
+  docref: string
 }

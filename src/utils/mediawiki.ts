@@ -2,7 +2,9 @@ export const config = mw.config.get()
 export const mwUtil = mw.util
 export const { user, hook } = mw
 
-export const mwApi = new mw.Api({
+// mw.Api
+export * from './mwApi'
+export const mwApiJQuery = new mw.Api({
   parameters: {
     action: 'query',
     errorformat: 'plaintext',

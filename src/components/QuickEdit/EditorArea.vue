@@ -44,7 +44,11 @@ const logger = new Logger('QuickEdit')
 const message = useMessage()
 const dialog = useDialog()
 
-import { MwApiParseResult, MwApiQueryPagesResult } from '../../types'
+import {
+  MwApiMultiErrorResult,
+  MwApiParseResult,
+  MwApiQueryPagesResult,
+} from '../../types'
 import { useDialog, useMessage } from 'naive-ui'
 
 const props =
@@ -85,16 +89,16 @@ const getPageParseData = async () => {
       ],
     })
     .then(
-      (data) => {
+      ({ data }) => {
         loading.value = false
         pageParse.value = data as MwApiParseResult
         const { parse } = pageParse.value
         formValue.value.wikitext = parse.wikitext + '\n'
         getPageQueryData()
       },
-      (errCode, { error: err }) => {
+      (err) => {
         loading.value = false
-        error.value = err.info
+        error.value = err.response.data.info
         logger.warn(err)
       }
     )
@@ -111,14 +115,14 @@ const getPageQueryData = () => {
       formatversion: '2',
     })
     .then(
-      (data) => {
+      ({ data }) => {
         loading.value = false
         pageQuery.value = data as MwApiQueryPagesResult
         logger.log('queryData', data)
       },
-      (errCode, { error: err }) => {
+      (err) => {
         loading.value = false
-        error.value = err.info
+        error.value = err.response.data.info
         logger.warn(err)
       }
     )
@@ -147,18 +151,17 @@ const submit = () => {
       ...(formValue.value.minorEdit ? { minor: 1 } : {}),
     })
     .then(
-      (data) => {
+      ({ data }) => {
         logger.info('submit ok')
         submitLoading.value = false
         message.success('保存成功！')
       },
-      (errCode, { errors: err }) => {
+      (err) => {
+        const e = err.response.data as MwApiMultiErrorResult
         logger.info('submit failed', err)
         dialog.error({
-          title: `保存失败：${errCode}`,
-          content() {
-            return h('div', {}, [h('div', {}, err[0]['*'])])
-          },
+          title: `保存失败：${e.errors[0].code}`,
+          content: e.errors[0].info,
         })
         submitLoading.value = false
       }
