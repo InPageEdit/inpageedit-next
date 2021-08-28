@@ -41,11 +41,10 @@ const message = useMessage()
 const dialog = useDialog()
 
 const components = defineComponent({ EditorArea })
-const props =
-  defineProps<{
-    enable: boolean
-    ctx: QuickEditCtx
-  }>()
+const props = defineProps<{
+  enable: boolean
+  ctx: QuickEditCtx
+}>()
 const addPage = ref('')
 
 const closeModal = () => {
