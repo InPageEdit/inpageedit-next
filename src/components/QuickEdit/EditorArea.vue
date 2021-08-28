@@ -75,9 +75,14 @@ const getPageParseData = async () => {
     .get({
       action: 'parse',
       page: props.pageName,
-      prop: 'wikitext|langlinks|categories|templates|images|sections',
-      format: 'json',
-      formatversion: '2',
+      prop: [
+        'wikitext',
+        'langlinks',
+        'categories',
+        'templates',
+        'images',
+        'sections',
+      ],
     })
     .then(
       (data) => {
@@ -99,7 +104,7 @@ const getPageQueryData = () => {
   mwApi
     .get({
       action: 'query',
-      prop: 'revisions|info',
+      prop: ['revisions', 'info'],
       inprop: 'protection',
       pageids: [pageParse.value.parse.pageid],
       format: 'json',
@@ -129,18 +134,17 @@ const submit = () => {
 
   mwApi
     .postWithEditToken({
-      action: 'edit',
-      starttimestamp: thisPage.revisions[0].timestamp,
-      basetimestamp: thisPage.touched,
-      // baserevid: thisPage.revid,
-      title: parse.title,
-      errorformat: 'plaintext',
-      text: formValue.value.wikitext,
-      summary: formValue.value.summary,
-      minor: formValue.value.minorEdit, // FIXME: set this to false does not work; should be absent instead
-      watchlist: formValue.value.addWatch ? 'watch' : 'unwatch',
-      format: 'json',
-      formatversion: '2',
+      ...{
+        action: 'edit',
+        starttimestamp: thisPage.revisions[0].timestamp,
+        basetimestamp: thisPage.touched,
+        // baserevid: thisPage.revid,
+        title: parse.title,
+        text: formValue.value.wikitext,
+        summary: formValue.value.summary,
+        watchlist: formValue.value.addWatch ? 'watch' : 'unwatch',
+      },
+      ...(formValue.value.minorEdit ? { minor: 1 } : {}),
     })
     .then(
       (data) => {
