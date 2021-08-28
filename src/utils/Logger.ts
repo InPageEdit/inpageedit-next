@@ -1,27 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 class Logger {
-  name: string
-  prefix: string
+  _prefix: string
+  namespace: string
   log: (...msg: any) => void
 
-  constructor(name: string) {
-    this.name = name
-    this.prefix = '[InPageEdit]'
+  constructor(namespace: string) {
+    this.namespace = namespace
+    this._prefix = '[InPageEdit]'
 
     // Alias
     this.log = this.info
   }
 
   info(...msg: any[]): void {
-    console.info(this.prefix, '[I]', this.name, ...msg)
+    console.info(this._prefix, '[I]', this.namespace, ...msg)
   }
 
   warn(...msg: any[]): void {
-    console.warn(this.prefix, '[W]', this.name, ...msg)
+    console.warn(this._prefix, '[W]', this.namespace, ...msg)
   }
 
   error(...msg: any[]): void {
-    console.error(this.prefix, '[E]', this.name, ...msg)
+    console.error(this._prefix, '[E]', this.namespace, ...msg)
   }
 }
 

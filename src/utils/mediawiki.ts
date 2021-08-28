@@ -7,6 +7,6 @@ const mwApi = new mw.Api({
   },
 })
 const mwUtil = mw.util
-const user = mw.user
+const { user, hook } = mw
 
-export { config, config as conf, mwApi, mwUtil, user }
+export { config, config as conf, hook, mwApi, mwUtil, user }

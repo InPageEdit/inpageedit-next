@@ -1,37 +1,26 @@
 <template lang="pug">
 .toolbox
-  NButton(type="primary") {{ template('core.quick_edit') }}
+  n-button(
+    type='primary',
+    @click='fn.quickEdit({ page: config.wgPageName })',
+    :title='template("core.quick_edit")'
+  )
+    n-icon
+      EditOutlined
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { defineComponent } from 'vue'
-import { NButton } from 'naive-ui'
 import { template } from '../utils'
-
-export default defineComponent({
-  components: {
-    NButton,
-  },
-  data() {
-    return {
-      template,
-    }
-  },
-  method: {
-    quickEdit() {
-      this.$emit('quick-edit', { page: mw.config.get('wgPageName') })
-    },
-  },
-  mounted() {
-    console.log(template('core.quick_edit'))
-  },
-})
+import { config } from '../utils/mediawiki'
+import * as fn from '../modules/controller'
+import { EditOutlined } from '@vicons/antd'
 </script>
 
 <style scoped lang="sass">
 .toolbox
   position: fixed
-  bottom: 2rem
-  right: 2rem
+  left: 3rem
+  bottom: 3rem
   z-index: 90
 </style>

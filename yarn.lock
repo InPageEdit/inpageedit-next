@@ -522,6 +522,16 @@
     "@typescript-eslint/types" "4.29.2"
     eslint-visitor-keys "^2.0.0"
 
+"@vicons/antd@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.npmjs.org/@vicons/antd/-/antd-0.11.0.tgz#3d28952d028aed712dca61cb81dbdb11454c5542"
+  integrity sha512-XRkUMJzfjr3Q5S6xbAg4ALI90DIGNhZdbVW6SejFi6EgxB5bts3YMMcM4HbF77vdQX5bhxgju3Hd3uP97OgvAQ==
+
+"@vicons/fa@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.npmjs.org/@vicons/fa/-/fa-0.11.0.tgz#dc6780b25b7943734e7c75d74df2f4443b0572ae"
+  integrity sha512-Mlv4sxlghqAPu+RM+6w0/GIcsQFK/fx1syw1HkABS6MJRLwHOqbmImCYZQam7OMAYhZBs82YpY5cp2NFSgwkOA==
+
 "@vue/compiler-core@3.2.4":
   version "3.2.4"
   resolved "https://registry.npmjs.org/@vue/compiler-core/-/compiler-core-3.2.4.tgz#a98d295771998c1e8dccc4ee3d52feb14b02aea9"
@@ -975,10 +985,10 @@ astral-regex@^2.0.0:
   resolved "https://registry.npmjs.org/astral-regex/-/astral-regex-2.0.0.tgz#483143c567aeed4785759c0865786dc77d7d2e31"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
 
-async-validator@^3.5.1:
-  version "3.5.2"
-  resolved "https://registry.npmjs.org/async-validator/-/async-validator-3.5.2.tgz#68e866a96824e8b2694ff7a831c1a25c44d5e500"
-  integrity sha512-8eLCg00W9pIRZSB781UUX/H6Oskmm8xloZfr09lz5bikRpBVDlJ3hRVuxxP1SxcwsEYfJ4IU8Q19Y8/893r3rQ==
+async-validator@^4.0.1:
+  version "4.0.2"
+  resolved "https://registry.npmjs.org/async-validator/-/async-validator-4.0.2.tgz#f8089628ff8a95f7c8c58e1b8d3c3cd9de186996"
+  integrity sha512-wPFnOgf9uIu/7uvptlX7PepSf2ArGt60Wng0bYrQ08eZVFG65LRLQpHKQebWEyAYtJcdPN31kndy4nS0jVnf0Q==
 
 at-least-node@^1.0.0:
   version "1.0.0"
@@ -2261,16 +2271,16 @@ mz@^2.4.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-naive-ui@^2.15.5:
-  version "2.15.5"
-  resolved "https://registry.npmjs.org/naive-ui/-/naive-ui-2.15.5.tgz#50ffc1834fd64765621a31f0b09e64d72770cd6c"
-  integrity sha512-ncNlvaVFaqdZrVFe8IAxqyFpP32k+l8bGfxW4PKCDP1huWG1AgXI2EKfO18Tu7Er6A/ENi68CStYA3ZnxEWFpw==
+naive-ui@^2.16.7:
+  version "2.16.7"
+  resolved "https://registry.npmjs.org/naive-ui/-/naive-ui-2.16.7.tgz#c6f8e6bc960bc3c270e724aab541dbe7e25fd819"
+  integrity sha512-0l0WX5lJZT9W9kyUke4K8nZsekIXSbfySxA82UPcI/MsaeOXZ5DPRrRGJEgDjK+D8Nw4hD6iex2IAvSvv5Uqog==
   dependencies:
     "@css-render/plugin-bem" "^0.15.4"
     "@css-render/vue3-ssr" "^0.15.4"
     "@types/lodash" "^4.14.170"
     "@types/lodash-es" "^4.17.4"
-    async-validator "^3.5.1"
+    async-validator "^4.0.1"
     css-render "^0.15.4"
     date-fns "^2.19.0"
     evtd "^0.2.2"
@@ -2278,7 +2288,7 @@ naive-ui@^2.15.5:
     lodash "^4.17.21"
     lodash-es "^4.17.21"
     seemly "^0.3.1"
-    treemate "^0.2.12"
+    treemate "^0.3.0"
     vdirs "^0.1.4"
     vfonts "^0.1.0"
     vooks "^0.2.6"
@@ -3047,10 +3057,10 @@ token-stream@1.0.0:
   resolved "https://registry.npmjs.org/token-stream/-/token-stream-1.0.0.tgz#cc200eab2613f4166d27ff9afc7ca56d49df6eb4"
   integrity sha1-zCAOqyYT9BZtJ/+a/HylbUnfbrQ=
 
-treemate@^0.2.12:
-  version "0.2.12"
-  resolved "https://registry.npmjs.org/treemate/-/treemate-0.2.12.tgz#eed8ce0cd5a03f11c090c43d08f548694eead4b5"
-  integrity sha512-li5ZxaT7BtBIEnT7eUO3mk4BdefANPUKjCGnTciFp5e5UDy3+07HLvWelKxuIz1jCz+6r5IPoP8P/5+8Xz9Z7w==
+treemate@^0.3.0:
+  version "0.3.2"
+  resolved "https://registry.npmjs.org/treemate/-/treemate-0.3.2.tgz#ad4f3072e51aab2801697ec20a467ebe01884070"
+  integrity sha512-vy4x0kVfNHxNh+AmXbvrCklYc6HlPpIgqy2zzCStBnqdlhuHP+PaOfKUS3YyISAPhj4g4KdqmvfYrgQV2SF6Ag==
 
 ts-loader@^9.2.5:
   version "9.2.5"

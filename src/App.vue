@@ -1,27 +1,26 @@
+/* eslint-disable vue/one-component-per-file */
 <template lang="pug">
-toolbox
+//- Containers
+n-loading-bar-provider
+  n-message-provider
+    n-notification-provider
+      n-dialog-provider
+        modules-index
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { defineComponent } from 'vue'
-import Toolbox from './components/Toolbox.vue'
-
-import i18n from './modules/i18n/zh-hans'
+import ModulesIndex from './components/index.vue'
 
 import { template } from './utils'
 
-export default defineComponent({
-  components: { Toolbox },
-  data() {
-    return {}
-  },
-  method: {},
-  mounted() {
-    template.set('core', {
-      quick_edit: '快速编辑',
-    })
-  },
+const components = defineComponent({ ModulesIndex })
+
+// template
+template.set('core', {
+  quick_edit: '快速编辑',
 })
+console.log('template', template('core.quick_edit'))
 </script>
 
 <style scoped lang="sass"></style>

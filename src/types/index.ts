@@ -1,1 +1,1 @@
-export * from './MwApiResponse'
+export * from './MwApiResult'
