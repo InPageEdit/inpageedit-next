@@ -23,17 +23,28 @@ export const mwApi = {
       params,
     })
   },
-  async getUserInfo() {
+  async getUserInfo(): Promise<{
+    id: number
+    name: string
+    groups: string[]
+    rights: string[]
+    blockid?: number
+    blockedby?: string
+    blockedbyid?: number
+    blockedtimestamp?: string
+    blockreason?: string
+    blockexpiry?: string
+  }> {
     const { data } = await this.get({
       action: 'query',
       meta: 'userinfo',
-      uiprop: ['groups', 'rights'],
+      uiprop: ['groups', 'rights', 'blockinfo'],
     })
     return data?.query?.userinfo
   },
   // POST
   post(body: Record<string, any>): Promise<AxiosResponse<any>> {
-    return axios.post('', {
+    return this.ajax.post('', {
       body,
     })
   },
