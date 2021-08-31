@@ -79,9 +79,10 @@ export interface MwApiEditResult {
 }
 
 export interface MwApiErrorResult {
-  error: {
+  errors: {
     code: string
-    info: string
-    docref: string
-  }
+    text: string
+    module: string
+  }[]
+  docref: string
 }
