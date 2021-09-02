@@ -20,5 +20,8 @@ rules:
   indent: ['error', 2, { SwitchCase: 1 }]
   quotes: ['error', 'single']
   semi: ['error', 'never']
+  # 烦死了
+  '@typescript-eslint/no-explicit-any': 0
+  '@typescript-eslint/explicit-module-boundary-types': 0
 globals:
   mw: writeable

@@ -41,10 +41,11 @@ const message = useMessage()
 const dialog = useDialog()
 
 const components = defineComponent({ EditorArea })
-const props = defineProps<{
-  enable: boolean
-  ctx: QuickEditCtx
-}>()
+const props =
+  defineProps<{
+    enable: boolean
+    ctx: QuickEditCtx
+  }>()
 const addPage = ref('')
 
 const closeModal = () => {
@@ -85,7 +86,9 @@ const handleTabClose = (name: string) => {
   }
   const index = Number(name.split('-')[1])
   list.splice(index, 1)
-  moduleStates.value.quickEdit.ctx.curTab = `editor-${index - 1}`
+  if (props.ctx.curTab === 'name') {
+    moduleStates.value.quickEdit.ctx.curTab = `editor-${index - 1}`
+  }
 }
 </script>
 

@@ -44,13 +44,18 @@ const logger = new Logger('QuickEdit')
 const message = useMessage()
 const dialog = useDialog()
 
-import { MwApiParseResult, MwApiQueryPagesResult } from '../../types'
+import {
+  MwApiMultiErrorResult,
+  MwApiParseResult,
+  MwApiQueryPagesResult,
+} from '../../types'
 import { useDialog, useMessage } from 'naive-ui'
 
-const props = defineProps<{
-  pageName: string
-  tabName: string
-}>()
+const props =
+  defineProps<{
+    pageName: string
+    tabName: string
+  }>()
 
 const formValue = ref({
   wikitext: '',
@@ -74,21 +79,26 @@ const getPageParseData = async () => {
     .get({
       action: 'parse',
       page: props.pageName,
-      prop: 'wikitext|langlinks|categories|templates|images|sections',
-      format: 'json',
-      formatversion: '2',
+      prop: [
+        'wikitext',
+        'langlinks',
+        'categories',
+        'templates',
+        'images',
+        'sections',
+      ],
     })
     .then(
-      (data) => {
+      ({ data }) => {
         loading.value = false
         pageParse.value = data as MwApiParseResult
         const { parse } = pageParse.value
         formValue.value.wikitext = parse.wikitext + '\n'
         getPageQueryData()
       },
-      (errCode, { error: err }) => {
+      (err) => {
         loading.value = false
-        error.value = err.info
+        error.value = err.response.data.info
         logger.warn(err)
       }
     )
@@ -98,21 +108,21 @@ const getPageQueryData = () => {
   mwApi
     .get({
       action: 'query',
-      prop: 'revisions|info',
+      prop: ['revisions', 'info'],
       inprop: 'protection',
       pageids: [pageParse.value.parse.pageid],
       format: 'json',
       formatversion: '2',
     })
     .then(
-      (data) => {
+      ({ data }) => {
         loading.value = false
         pageQuery.value = data as MwApiQueryPagesResult
         logger.log('queryData', data)
       },
-      (errCode, { error: err }) => {
+      (err) => {
         loading.value = false
-        error.value = err.info
+        error.value = err.response.data.info
         logger.warn(err)
       }
     )
@@ -122,38 +132,36 @@ const submit = () => {
 
   const parse = pageParse.value.parse
   const query = pageQuery.value.query
-  const thisPage = query.pages[parse.pageid]
+  const thisPage = query.pages[0]
 
   logger.info('submit', { formValue: formValue.value })
 
   mwApi
     .postWithEditToken({
-      action: 'edit',
-      starttimestamp: thisPage.revisions[0].timestamp,
-      basetimestamp: thisPage.touched,
-      // baserevid: thisPage.revid,
-      title: parse.title,
-      errorformat: 'plaintext',
-      text: formValue.value.wikitext,
-      summary: formValue.value.summary,
-      minor: formValue.value.minorEdit, // FIXME: set this to false does not work; should be absent instead
-      watchlist: formValue.value.addWatch ? 'watch' : 'unwatch',
-      format: 'json',
-      formatversion: '2',
+      ...{
+        action: 'edit',
+        starttimestamp: thisPage.revisions[0].timestamp,
+        basetimestamp: thisPage.touched,
+        // baserevid: thisPage.revid,
+        title: parse.title,
+        text: formValue.value.wikitext,
+        summary: formValue.value.summary,
+        watchlist: formValue.value.addWatch ? 'watch' : 'unwatch',
+      },
+      ...(formValue.value.minorEdit ? { minor: 1 } : {}),
     })
     .then(
-      (data) => {
+      ({ data }) => {
         logger.info('submit ok')
         submitLoading.value = false
         message.success('保存成功！')
       },
-      (errCode, { errors: err }) => {
+      (err) => {
+        const e = err.response.data as MwApiMultiErrorResult
         logger.info('submit failed', err)
         dialog.error({
-          title: `保存失败：${errCode}`,
-          content() {
-            return h('div', {}, [h('div', {}, err[0]['*'])])
-          },
+          title: `保存失败：${e.errors[0].code}`,
+          content: e.errors[0].info,
         })
         submitLoading.value = false
       }

@@ -1,12 +1,21 @@
-const config = mw.config.get()
-const mwApi = new mw.Api({
+export const config = mw.config.get()
+export const mwUtil = mw.util
+export const { user, hook } = mw
+
+// mw.Api
+export * from './mwApi'
+export const mwApiJQuery = new mw.Api({
+  parameters: {
+    action: 'query',
+    errorformat: 'plaintext',
+    format: 'json',
+    formatversion: 2,
+  },
   ajax: {
     headers: {
-      'x-query-initiator': 'inpageedit-next',
+      'api-user-agent': `InPageEdit/next (${config.wgWikiID})`,
     },
   },
 })
-const mwUtil = mw.util
-const { user, hook } = mw
 
-export { config, config as conf, hook, mwApi, mwUtil, user }
+export { config as conf }
