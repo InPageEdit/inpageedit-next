@@ -23,7 +23,7 @@ n-modal.quick-delete(
 
     pre.formValue {{ JSON.stringify(formValue, null, 2) }}
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, defineProps, ref } from 'vue'
 import { mwApi, user } from '../utils/mediawiki'
 import { Logger } from '../utils'
