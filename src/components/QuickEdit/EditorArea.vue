@@ -51,11 +51,10 @@ import {
 } from '../../types'
 import { useDialog, useMessage } from 'naive-ui'
 
-const props =
-  defineProps<{
-    pageName: string
-    tabName: string
-  }>()
+const props = defineProps<{
+  pageName: string
+  tabName: string
+}>()
 
 const formValue = ref({
   wikitext: '',

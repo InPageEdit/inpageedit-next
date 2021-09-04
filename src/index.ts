@@ -5,6 +5,9 @@ import naive from 'naive-ui'
 import App from './App.vue'
 const app = createApp(App)
 
+import { i18n } from './i18n'
+app.use(i18n)
+
 app.use(naive)
 
 // Mount

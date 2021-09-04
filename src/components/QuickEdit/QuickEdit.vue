@@ -7,7 +7,7 @@ n-modal.quickEdit(v-model:show='enable', :mask-closable='false')
     :style='{ width: "95vw" }',
     closable,
     @close='closeModal',
-    title='Quick Edit'
+    title='$t("core.quick_edit")'
   )
     n-tabs(
       v-model:value='ctx.curTab',
@@ -41,11 +41,10 @@ const message = useMessage()
 const dialog = useDialog()
 
 const components = defineComponent({ EditorArea })
-const props =
-  defineProps<{
-    enable: boolean
-    ctx: QuickEditCtx
-  }>()
+const props = defineProps<{
+  enable: boolean
+  ctx: QuickEditCtx
+}>()
 const addPage = ref('')
 
 const closeModal = () => {

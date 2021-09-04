@@ -3,7 +3,7 @@
   n-button(
     type='primary',
     @click='fn.quickEdit({ page: config.wgPageName })',
-    :title='template("core.quick_edit")'
+    :title='$t("core.quick_edit")'
   )
     n-icon
       EditOutlined
@@ -11,7 +11,6 @@
 
 <script lang="ts" setup>
 import { defineComponent } from 'vue'
-import { template } from '../utils'
 import { config } from '../utils/mediawiki'
 import * as fn from '../modules/controller'
 import { EditOutlined } from '@vicons/antd'
