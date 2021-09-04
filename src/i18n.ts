@@ -1,8 +1,10 @@
 import { createI18n } from 'vue-i18n'
+import * as en from './locales/en.json'
+import * as zhHans from './locales/zh-Hans.json'
 
 const messages = {
-  en: require('./locales/en.json'),
-  'zh-Hans': require('./locales/zh-Hans.json'),
+  en,
+  'zh-Hans': zhHans,
 }
 
 export const i18n = createI18n({
