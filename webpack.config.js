@@ -63,7 +63,7 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin({
       eslint: {
         enabled: true,
-        files: './src/**/*',
+        files: './src/**/*.{ts,tsx,js,jsx}',
       },
     }),
     new VueLoaderPlugin(),
