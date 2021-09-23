@@ -1,4 +1,3 @@
-/* eslint-disable vue/one-component-per-file */
 <template lang="pug">
 //- Containers
 n-loading-bar-provider

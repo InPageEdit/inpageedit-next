@@ -6,7 +6,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
   context: __dirname,
-  entry: './src/index.ts',
+  entry: { InPageEdit: './src/index.ts' },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
@@ -68,4 +68,7 @@ module.exports = {
     }),
     new VueLoaderPlugin(),
   ],
+  devServer: {
+    port: 1005
+  }
 }
