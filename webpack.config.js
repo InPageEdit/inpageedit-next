@@ -8,7 +8,7 @@ module.exports = {
   context: __dirname,
   entry: './src/index.ts',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.vue', '.json'],
   },
   mode: 'development',
   devtool: 'source-map',
@@ -32,15 +32,11 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: '/node_modules/',
-        use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              appendTsSuffixTo: [/\.vue$/],
-              transpileOnly: true,
-            },
-          },
-        ],
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+          transpileOnly: true,
+        },
       },
       {
         test: /\.sass$/,
@@ -62,9 +58,15 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       eslint: {
-        enabled: true,
         files: './src/**/*.{ts,tsx,js,jsx}',
       },
+      typescript: {
+        extensions: {
+          vue: {
+            compiler: '@vue/compiler-sfc',
+          }
+        }
+      }
     }),
     new VueLoaderPlugin(),
   ],
