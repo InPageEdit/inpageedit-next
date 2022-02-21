@@ -423,10 +423,10 @@
   dependencies:
     "@types/braces" "*"
 
-"@types/node@*", "@types/node@^16.3.3":
-  version "16.3.3"
-  resolved "https://registry.npmjs.org/@types/node/-/node-16.3.3.tgz#0c30adff37bbbc7a50eb9b58fae2a504d0d88038"
-  integrity sha512-8h7k1YgQKxKXWckzFCMfsIwn0Y61UK6tlD6y2lOb3hTOIMlK3t9/QwHOhc81TwU+RMf0As5fj7NPjroERCnejQ==
+"@types/node@*", "@types/node@^17.0.18":
+  version "17.0.18"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.18.tgz#3b4fed5cfb58010e3a2be4b6e74615e4847f1074"
+  integrity sha512-eKj4f/BsN/qcculZiRSujogjvp5O/k4lOW5m35NopjZM/QwLOR075a8pJW5hD+Rtdm2DaCVPENS6KtSQnUD6BA==
 
 "@types/node@^14.14.10":
   version "14.17.5"
