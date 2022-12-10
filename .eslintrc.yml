@@ -17,7 +17,7 @@ parserOptions:
     - .vue
   ecmaVersion: 12
 rules: 
-  indent: ['error', 2, { SwitchCase: 1 }]
+  indent: ['error', 2, { SwitchCase: 1,offsetTernaryExpressions: true }]
   quotes: ['error', 'single']
   semi: ['error', 'never']
   # 烦死了
