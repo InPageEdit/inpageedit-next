@@ -1,16 +1,7 @@
 import { useContext, InPageEdit } from '../../core/src'
 import type { PageInfo } from './types/PageInfo'
 
-export abstract class WikiPage {
-  constructor(protected pageInfo: PageInfo) {}
-  static _createInstance: (payload: Record<string, any>) => Promise<WikiPage>
-  static newFromTitle: (title: string, converttitles?: boolean) => Promise<WikiPage>
-  static newFromPageId: (pageid: number, converttitles?: boolean) => Promise<WikiPage>
-  static newFromRevision: (revid: number, converttitles?: boolean) => Promise<WikiPage>
-  parse(): Promise<any>
-}
-
-class WikiPageFactory extends WikiPage {
+class WikiPageFactory {
   constructor(protected ctx: InPageEdit, protected pageInfo: PageInfo) {
     super(pageInfo)
   }
@@ -49,6 +40,14 @@ class WikiPageFactory extends WikiPage {
   async delete() {
     // ...
   }
+}
+
+export abstract class WikiPage extends WikiPageFactory {
+  constructor(protected pageInfo: PageInfo) {}
+  static _createInstance: (payload: Record<string, any>) => Promise<WikiPage>
+  static newFromTitle: (title: string, converttitles?: boolean) => Promise<WikiPage>
+  static newFromPageId: (pageid: number, converttitles?: boolean) => Promise<WikiPage>
+  static newFromRevision: (revid: number, converttitles?: boolean) => Promise<WikiPage>
 }
 
 export const useWikiPage = useContext((ctx) => {
