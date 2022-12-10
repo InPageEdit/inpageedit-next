@@ -7,27 +7,29 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { type WikiPage } from '../../../../packages/wikipage/src'
+import { InPageEdit } from '../../../../packages/core/src'
 
-const props = defineProps<{ page: WikiPage }>()
+const props = defineProps<{ ctx: InPageEdit; title: string }>()
 
 const isLoading = ref(true)
 const text = ref('')
 const originalText = ref('')
+const page = ref()
 
 onMounted(() => {
-  props.page.parse().then(({ data }) => {
+  props.ctx.WikiPage.newFromTitle(props.title).then((pageinfo) => {
     isLoading.value = false
-    text.value = data.parse.wikitext
-    originalText.value = data.parse.wikitext
+    page.value = pageinfo
+    text.value = pageinfo.PAGE_INFO.revisions[0].content
+    originalText.value = text.value
   })
 })
 
 async function submit() {
-  props.page.edit({ text: text.value })
+  page.value.edit(text.value)
 }
 async function preview() {
-  props.page.preview({ pst: 1 })
+  page.value.preview(text.value)
 }
 </script>
 

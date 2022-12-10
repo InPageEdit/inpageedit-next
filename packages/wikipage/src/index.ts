@@ -1,28 +1,29 @@
 import { useContext, InPageEdit } from '../../core/src'
 import type { PageInfo } from './types/PageInfo'
 
-class WikiPageFactory {
-  constructor(protected ctx: InPageEdit, protected pageInfo: PageInfo) {
-    super(pageInfo)
-  }
+type ApiParams = Record<string, string | number | string[] | undefined | boolean>
 
-  async parse() {
+class WikiPageFactory {
+  constructor(public ctx: InPageEdit, public PAGE_INFO: PageInfo) {}
+
+  async parse(params?: ApiParams) {
     const {
       data: { parse },
     } = await this.ctx.api.post({
       action: 'parse',
-      page: this.pageInfo.title,
+      page: this.PAGE_INFO.title,
       prop: 'text|langlinks|categories|links|templates|images|externallinks|sections|revid|displaytitle|iwlinks|properties|parsewarnings',
+      ...params,
     })
     return parse
   }
-  async preview(text: string, params: Record<string, any>) {
+  async preview(text: string, params?: ApiParams) {
     const {
       data: { parse },
     } = await this.ctx.api.post({
       action: 'parse',
       text,
-      title: this.pageInfo.title,
+      title: this.PAGE_INFO.title,
       pst: 1,
       preview: 1,
       disableeditsection: 1,
@@ -31,9 +32,11 @@ class WikiPageFactory {
     })
     return parse
   }
-  async edit(payload: { text: string }) {
+  async edit(text: string, payload?: Partial<{ starttimestamp: string }>) {
     return this.ctx.api.post({
       action: 'edit',
+      starttimestamp: this.PAGE_INFO.touched,
+      basetimestamp: this.PAGE_INFO.r,
       ...payload,
     })
   }
@@ -43,7 +46,9 @@ class WikiPageFactory {
 }
 
 export abstract class WikiPage extends WikiPageFactory {
-  constructor(protected pageInfo: PageInfo) {}
+  constructor(public PAGE_INFO: PageInfo) {
+    super({} as any, PAGE_INFO)
+  }
   static _createInstance: (payload: Record<string, any>) => Promise<WikiPage>
   static newFromTitle: (title: string, converttitles?: boolean) => Promise<WikiPage>
   static newFromPageId: (pageid: number, converttitles?: boolean) => Promise<WikiPage>
@@ -52,8 +57,8 @@ export abstract class WikiPage extends WikiPageFactory {
 
 export const useWikiPage = useContext((ctx) => {
   return class WikiPageWithContext extends WikiPageFactory implements WikiPage {
-    constructor(protected pageInfo: PageInfo) {
-      super(ctx, pageInfo)
+    constructor(public PAGE_INFO: PageInfo) {
+      super(ctx, PAGE_INFO)
     }
     static async _createInstance(payload: Record<string, any>) {
       const {
@@ -64,7 +69,7 @@ export const useWikiPage = useContext((ctx) => {
         },
       } = await ctx.api.get({
         action: 'query',
-        prop: 'info|templates|transcludedin|images|pageimages',
+        prop: 'info|templates|transcludedin|images|pageimages|revisions',
         inprop: 'protection|url|varianttitles',
         intestactions: 'edit|move|delete',
         tllimit: 'max',
