@@ -7,8 +7,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "mediawiki-api-axios": "^1.2.0"
-  }
+  "license": "MIT"
 }

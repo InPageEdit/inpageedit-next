@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@vicons/fa": "^0.12.0",
-    "mediawiki-api-axios": "^1.2.0",
+    "mediawiki-api-axios": "^1.2.1",
     "vue": "^3.2.45"
   },
   "devDependencies": {

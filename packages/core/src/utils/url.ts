@@ -1,4 +1,4 @@
-import { useContext } from '..'
+import { useContext } from './useContext'
 
 export const useGetScript = useContext((ctx) => {
   const site = ctx.siteInfo.general

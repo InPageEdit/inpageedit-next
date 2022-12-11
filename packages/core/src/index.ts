@@ -32,11 +32,3 @@ export class InPageEdit {
     }
   }
 }
-
-export class Service {
-  protected ctx: InPageEdit
-}
-
-export function useContext<T, O>(payload: (ctx: InPageEdit, options?: O) => T) {
-  return payload
-}

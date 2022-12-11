@@ -20,13 +20,13 @@ onMounted(() => {
   props.ctx.WikiPage.newFromTitle(props.title).then((pageinfo) => {
     isLoading.value = false
     page.value = pageinfo
-    text.value = pageinfo.PAGE_INFO.revisions[0].content
+    text.value = pageinfo.PAGEINFO.revisions[0].content
     originalText.value = text.value
   })
 })
 
 async function submit() {
-  page.value.edit(text.value)
+  page.value.edit({ text: text.value })
 }
 async function preview() {
   page.value.preview(text.value)

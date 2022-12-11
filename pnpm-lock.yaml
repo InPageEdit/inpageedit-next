@@ -13,7 +13,7 @@ importers:
       eslint: ^8.29.0
       eslint-config-prettier: ^8.5.0
       eslint-plugin-vue: ^9.8.0
-      mediawiki-api-axios: ^1.2.0
+      mediawiki-api-axios: ^1.2.1
       naive-ui: ^2.34.2
       prettier: ^2.8.1
       pug: ^3.0.2
@@ -24,7 +24,7 @@ importers:
       vue: ^3.2.45
     dependencies:
       '@vicons/fa': 0.12.0
-      mediawiki-api-axios: 1.2.0
+      mediawiki-api-axios: 1.2.1
       vue: 3.2.45
     devDependencies:
       '@prettier/plugin-pug': 2.3.0_prettier@2.8.1
@@ -56,17 +56,12 @@ importers:
 
   packages/core:
     specifiers:
-      vite: ^3.2.3
       vite-plugin-dts: ^1.7.1
     devDependencies:
-      vite: 3.2.3
-      vite-plugin-dts: 1.7.1_vite@3.2.3
+      vite-plugin-dts: 1.7.1
 
   packages/wikipage:
-    specifiers:
-      mediawiki-api-axios: ^1.2.0
-    dependencies:
-      mediawiki-api-axios: 1.2.0
+    specifiers: {}
 
 packages:
 
@@ -731,12 +726,6 @@ packages:
       estree-walker: 2.0.2
       magic-string: 0.25.9
 
-  /@vue/reactivity/3.2.44:
-    resolution: {integrity: sha512-Fe0s52fTsPl+RSdvoqUZ3HRKlaVsKhIh1mea5EWOedFvZCjnymzlj3YC1wZMxi89qXRFSdEASVA/BWUGypk0Ig==}
-    dependencies:
-      '@vue/shared': 3.2.44
-    dev: false
-
   /@vue/reactivity/3.2.45:
     resolution: {integrity: sha512-PRvhCcQcyEVohW0P8iQ7HDcIOXRjZfAsOds3N99X/Dzewy8TVhTCT4uXpAHfoKjVTJRA0O0K+6QNkDIZAxNi3A==}
     dependencies:
@@ -763,10 +752,6 @@ packages:
       '@vue/compiler-ssr': 3.2.45
       '@vue/shared': 3.2.45
       vue: 3.2.45
-
-  /@vue/shared/3.2.44:
-    resolution: {integrity: sha512-mGZ44bnn0zpZ36nXtxbrBPno43yr96wjQE1dBEKS1Sieugt27HS4OGZVBRIgsdGzosB7vqZAvu0ttu1FDVdolA==}
-    dev: false
 
   /@vue/shared/3.2.45:
     resolution: {integrity: sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==}
@@ -1868,10 +1853,10 @@ packages:
     dependencies:
       sourcemap-codec: 1.4.8
 
-  /mediawiki-api-axios/1.2.0:
-    resolution: {integrity: sha512-O02Y+vi7PDb78AA8uylyVFwlOAWgyU5RcAg96gKdWiJLq9CgqV99rZFeXVM1MAi4U6ueOG8YWF/3n0AtV8lU4A==}
+  /mediawiki-api-axios/1.2.1:
+    resolution: {integrity: sha512-SL2B12BfD9LlM/TDuTXLwT7aQjLKaW9euofdJ+7D5qn59yhr8ggyKe9SgU5PUPx2KGr4lKc82Qyqkw/RUl+Mdw==}
     dependencies:
-      '@vue/reactivity': 3.2.44
+      '@vue/reactivity': 3.2.45
       axios: 0.27.2
     transitivePeerDependencies:
       - debug
@@ -2460,6 +2445,25 @@ packages:
     dependencies:
       evtd: 0.2.4
       vue: 3.2.45
+    dev: true
+
+  /vite-plugin-dts/1.7.1:
+    resolution: {integrity: sha512-2oGMnAjcrZN7jM1TloiS1b1mCn42s3El04ix2RFhId5P1WfMigF8WAwsqT6a6jk0Yso8t7AeZsBkkxYShR0hBQ==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: '>=2.9.0'
+    dependencies:
+      '@microsoft/api-extractor': 7.33.7
+      '@rollup/pluginutils': 5.0.2
+      '@rushstack/node-core-library': 3.53.3
+      debug: 4.3.4
+      fast-glob: 3.2.12
+      fs-extra: 10.1.0
+      kolorist: 1.6.0
+      ts-morph: 16.0.0
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
     dev: true
 
   /vite-plugin-dts/1.7.1_vite@3.2.3:

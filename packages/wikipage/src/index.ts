@@ -1,29 +1,36 @@
-import { useContext, InPageEdit } from '../../core/src'
+import type { InPageEdit } from '../../core/src'
 import type { PageInfo } from './types/PageInfo'
+import type { MwApiParams } from 'mediawiki-api-axios'
+import { useContext } from '../../core/src/utils/useContext'
 
-type ApiParams = Record<string, string | number | string[] | undefined | boolean>
+type WatchlistType = 'preferences' | 'watch' | 'unwatch' | 'nochange'
 
 class WikiPageFactory {
-  constructor(public ctx: InPageEdit, public PAGE_INFO: PageInfo) {}
+  constructor(public ctx: InPageEdit, public PAGEINFO: PageInfo) {}
 
-  async parse(params?: ApiParams) {
+  /**
+   * Check whether the current user can perform certain operations
+   */
+  isAbleTo(action: 'edit' | 'move' | 'delete') {
+    return this.PAGEINFO.actions[action]
+  }
+  async parse(params?: MwApiParams) {
     const {
       data: { parse },
     } = await this.ctx.api.post({
       action: 'parse',
-      page: this.PAGE_INFO.title,
+      page: this.PAGEINFO.title,
       prop: 'text|langlinks|categories|links|templates|images|externallinks|sections|revid|displaytitle|iwlinks|properties|parsewarnings',
       ...params,
     })
     return parse
   }
-  async preview(text: string, params?: ApiParams) {
-    const {
-      data: { parse },
-    } = await this.ctx.api.post({
+  async preview(text: string, params?: MwApiParams) {
+    const parse = await this.parse({
       action: 'parse',
+      page: undefined,
+      title: this.PAGEINFO.title,
       text,
-      title: this.PAGE_INFO.title,
       pst: 1,
       preview: 1,
       disableeditsection: 1,
@@ -32,22 +39,35 @@ class WikiPageFactory {
     })
     return parse
   }
-  async edit(text: string, payload?: Partial<{ starttimestamp: string }>) {
-    return this.ctx.api.post({
+  async edit(payload: { text: string; summary?: string; watchlist?: WatchlistType }, params?: MwApiParams) {
+    const { text, summary = '', watchlist = 'preferences' } = payload
+    return this.ctx.api.postWithEditToken({
       action: 'edit',
-      starttimestamp: this.PAGE_INFO.touched,
-      basetimestamp: this.PAGE_INFO.r,
-      ...payload,
+      title: this.PAGEINFO.title,
+      starttimestamp: this.PAGEINFO.touched,
+      basetimestamp: this.PAGEINFO.revisions[0].timestamp,
+      text,
+      summary,
+      watchlist,
+      ...params,
     })
   }
-  async delete() {
-    // ...
+  async create(payload: { text: string; summary?: string; watchlist?: WatchlistType }, params?: MwApiParams) {
+    return this.edit(payload, { createonly: 1, ...params })
+  }
+  async delete(reason?: string, params?: MwApiParams) {
+    return this.ctx.api.postWithEditToken({
+      action: 'delete',
+      pageid: this.PAGEINFO.pageid,
+      reason,
+      ...params,
+    })
   }
 }
 
 export abstract class WikiPage extends WikiPageFactory {
-  constructor(public PAGE_INFO: PageInfo) {
-    super({} as any, PAGE_INFO)
+  constructor(public PAGEINFO: PageInfo) {
+    super({} as any, PAGEINFO)
   }
   static _createInstance: (payload: Record<string, any>) => Promise<WikiPage>
   static newFromTitle: (title: string, converttitles?: boolean) => Promise<WikiPage>
@@ -57,8 +77,8 @@ export abstract class WikiPage extends WikiPageFactory {
 
 export const useWikiPage = useContext((ctx) => {
   return class WikiPageWithContext extends WikiPageFactory implements WikiPage {
-    constructor(public PAGE_INFO: PageInfo) {
-      super(ctx, PAGE_INFO)
+    constructor(public PAGEINFO: PageInfo) {
+      super(ctx, PAGEINFO)
     }
     static async _createInstance(payload: Record<string, any>) {
       const {
@@ -78,6 +98,7 @@ export const useWikiPage = useContext((ctx) => {
         piprop: 'thumbnail|name|original',
         pithumbsize: '200',
         pilimit: 'max',
+        rvprop: 'ids|timestamp|flags|comment|user|content',
         ...payload,
       })
       return new WikiPageFactory(ctx, pageInfo)
