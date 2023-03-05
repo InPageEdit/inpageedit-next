@@ -1,6 +1,6 @@
 import type { PageInfo } from './types/PageInfo'
 import type { MwApiParams } from 'mediawiki-api-axios'
-import { Context, Service } from 'cordis'
+import { Context } from 'cordis'
 
 type WatchlistType = 'preferences' | 'watch' | 'unwatch' | 'nochange'
 
@@ -89,8 +89,6 @@ class WikiPageFactory {
       ...params,
     })
   }
-
-  // Chore
 }
 
 export class WikiPage extends WikiPageFactory {
@@ -103,9 +101,9 @@ export class WikiPage extends WikiPageFactory {
   static newFromRevision: (revid: number, converttitles?: boolean) => Promise<WikiPage>
 }
 
-export class WikiPageService extends Service {
+Context.service('WikiPage')
+export class WikiPageService {
   constructor(public ctx: Context, public options?: any) {
-    super(ctx, 'WikiPage')
     ctx.WikiPage = class extends WikiPageFactory implements WikiPage {
       constructor(public pageInfo: PageInfo) {
         super(ctx, pageInfo)

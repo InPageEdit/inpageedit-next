@@ -6,16 +6,16 @@ export class UrlService extends Service {
   }
 
   getScript(name = 'index') {
-    const g = this.ctx.siteInfo.general
-    const url = new URL(g.server)
-    url.pathname = `${g.scriptpath}/${name.endsWith('.php') ? name.substring(name.length - 4) : name}.php`
+    const { server, scriptpath } = this.ctx.siteInfo.general
+    const url = new URL(server)
+    url.pathname = `${scriptpath}/${name.endsWith('.php') ? name.substring(name.length - 4) : name}.php`
     return url.href
   }
 
   getPage(title: string, params?: Record<string, string>) {
-    const g = this.ctx.siteInfo.general
+    const { script, articlepath } = this.ctx.siteInfo.general
     return params
-      ? `${g.script}?${new URLSearchParams({ ...params, title })}`
-      : `${g.articlepath.replace('$1', encodeURI(title))}`
+      ? `${script}?${new URLSearchParams({ ...params, title })}`
+      : `${articlepath.replace('$1', encodeURI(title))}`
   }
 }

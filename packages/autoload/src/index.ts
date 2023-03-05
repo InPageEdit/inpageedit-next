@@ -1,6 +1,7 @@
-import { InPageEdit } from '@inpageedit/core'
-;(() => {
-  const { config, hook } = globalThis.mw
-  const ipe = InPageEdit.newFromApiEndpoint(config.wgServer + config.wgScriptPath + 'api.php')
-  hook.fire('InPageEdit', ipe)
-})()
+import { InPageEdit } from '../../core/src'
+
+const { wgServer, wgScriptPath } = globalThis.mw.config.get()
+const { hook } = globalThis.mw.hook
+InPageEdit.newFromApiEndpoint(wgServer + wgScriptPath + 'api.php').then(async (ipe) => {
+  hook('InPageEdit').fire(ipe)
+})
