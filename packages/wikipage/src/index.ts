@@ -5,10 +5,10 @@ import { Context } from 'cordis'
 type WatchlistType = 'preferences' | 'watch' | 'unwatch' | 'nochange'
 
 class WikiPageFactory {
-  #currentRevid: number
+  #currentRevid?: number
 
   constructor(public ctx: Context, public pageInfo: PageInfo) {
-    this.#currentRevid = pageInfo.revisions[0].revid
+    this.#currentRevid = pageInfo?.revisions?.[0].revid
   }
 
   // Utils
@@ -71,7 +71,7 @@ class WikiPageFactory {
       action: 'edit',
       title: this.pageInfo.title,
       starttimestamp: this.pageInfo.touched,
-      basetimestamp: this.pageInfo.revisions[0].timestamp,
+      basetimestamp: this.pageInfo?.revisions?.[0].timestamp,
       text,
       summary,
       watchlist,

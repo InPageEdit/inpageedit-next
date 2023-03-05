@@ -36,7 +36,7 @@ export interface PageInfo {
     move: boolean
     delete: boolean
   }
-  revisions: {
+  revisions?: {
     revid: number
     parentid: number
     minor: boolean
