@@ -1,34 +1,39 @@
-import { MediaWikiApi, MediaWikiForeignApi } from 'mediawiki-api-axios'
-import { useWikiPage, WikiPage } from '../../wikipage/src'
-import { SiteInfo } from './types/SiteInfo'
-import { useGetScript, useGetUrl } from './utils/url'
+// Core dependencies
+import { Context } from 'cordis'
 
-export class InPageEdit {
-  // WikiPage: typeof WikiPage
-  api: MediaWikiApi
-  endpoint: string
-  WikiPage: typeof WikiPage
+// Types
+import type { SiteInfo } from './types/SiteInfo'
+import type { MediaWikiApi } from 'mediawiki-api-axios'
+
+// Services and Plugins
+import { WikiPage, WikiPageService } from '../../wikipage/src'
+import { ApiService } from './services/ApiService'
+import { UrlService } from './services/UrlService'
+import { getSiteInfo } from './utils/getSiteInfo'
+
+declare module 'cordis' {
+  interface Context {
+    api: MediaWikiApi
+    siteInfo: SiteInfo
+    url: UrlService
+    WikiPage: typeof WikiPage
+  }
+}
+
+export class InPageEdit extends Context {
+  constructor(readonly siteInfo: SiteInfo, isForeign?: boolean) {
+    console.info('Yeah!')
+
+    super()
+
+    // Core services
+    this.plugin(ApiService, { isForeign })
+    this.plugin(UrlService)
+    this.plugin(WikiPageService)
+  }
 
   static async newFromApiEndpoint(endpoint: string, isForeign = false) {
-    const api = !isForeign ? new MediaWikiApi(endpoint) : new MediaWikiForeignApi(endpoint)
-    const { data: siteinfo } = await api.get({
-      action: 'query',
-      meta: 'siteinfo',
-      siprop: 'general|namespaces|namespacealiases|magicwords|extensiontags|functionhooks',
-    })
-    return new InPageEdit(siteinfo.query, isForeign)
-  }
-
-  constructor(readonly siteInfo: SiteInfo, isForeign = false) {
-    this.endpoint = this.utils.getScript('api')
-    this.api = !isForeign ? new MediaWikiApi(this.endpoint) : new MediaWikiForeignApi(this.endpoint)
-    this.WikiPage = useWikiPage(this)
-  }
-
-  get utils() {
-    return {
-      getUrl: useGetUrl(this),
-      getScript: useGetScript(this),
-    }
+    const siteinfo = await getSiteInfo(endpoint, isForeign)
+    return new InPageEdit(siteinfo, isForeign)
   }
 }

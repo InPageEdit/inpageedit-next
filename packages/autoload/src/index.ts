@@ -4,5 +4,3 @@ import { InPageEdit } from '@inpageedit/core'
   const ipe = InPageEdit.newFromApiEndpoint(config.wgServer + config.wgScriptPath + 'api.php')
   hook.fire('InPageEdit', ipe)
 })()
-
-export default null
