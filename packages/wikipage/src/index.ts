@@ -6,20 +6,20 @@ import { useContext } from '../../core/src/utils/useContext'
 type WatchlistType = 'preferences' | 'watch' | 'unwatch' | 'nochange'
 
 class WikiPageFactory {
-  constructor(public ctx: InPageEdit, public PAGEINFO: PageInfo) {}
+  constructor(public ctx: InPageEdit, public pageInfo: PageInfo) {}
 
   /**
    * Check whether the current user can perform certain operations
    */
   isAbleTo(action: 'edit' | 'move' | 'delete') {
-    return this.PAGEINFO.actions[action]
+    return this.pageInfo.actions[action]
   }
   async parse(params?: MwApiParams) {
     const {
       data: { parse },
     } = await this.ctx.api.post({
       action: 'parse',
-      page: this.PAGEINFO.title,
+      page: this.pageInfo.title,
       prop: 'text|langlinks|categories|links|templates|images|externallinks|sections|revid|displaytitle|iwlinks|properties|parsewarnings',
       ...params,
     })
@@ -29,7 +29,7 @@ class WikiPageFactory {
     const parse = await this.parse({
       action: 'parse',
       page: undefined,
-      title: this.PAGEINFO.title,
+      title: this.pageInfo.title,
       text,
       pst: 1,
       preview: 1,
@@ -43,9 +43,9 @@ class WikiPageFactory {
     const { text, summary = '', watchlist = 'preferences' } = payload
     return this.ctx.api.postWithEditToken({
       action: 'edit',
-      title: this.PAGEINFO.title,
-      starttimestamp: this.PAGEINFO.touched,
-      basetimestamp: this.PAGEINFO.revisions[0].timestamp,
+      title: this.pageInfo.title,
+      starttimestamp: this.pageInfo.touched,
+      basetimestamp: this.pageInfo.revisions[0].timestamp,
       text,
       summary,
       watchlist,
@@ -58,7 +58,7 @@ class WikiPageFactory {
   async delete(reason?: string, params?: MwApiParams) {
     return this.ctx.api.postWithEditToken({
       action: 'delete',
-      pageid: this.PAGEINFO.pageid,
+      pageid: this.pageInfo.pageid,
       reason,
       ...params,
     })
@@ -66,8 +66,8 @@ class WikiPageFactory {
 }
 
 export abstract class WikiPage extends WikiPageFactory {
-  constructor(public PAGEINFO: PageInfo) {
-    super({} as any, PAGEINFO)
+  constructor(public pageInfo: PageInfo) {
+    super({} as any, pageInfo)
   }
   static _createInstance: (payload: Record<string, any>) => Promise<WikiPage>
   static newFromTitle: (title: string, converttitles?: boolean) => Promise<WikiPage>
@@ -77,10 +77,10 @@ export abstract class WikiPage extends WikiPageFactory {
 
 export const useWikiPage = useContext((ctx) => {
   return class WikiPageWithContext extends WikiPageFactory implements WikiPage {
-    constructor(public PAGEINFO: PageInfo) {
-      super(ctx, PAGEINFO)
+    constructor(public pageInfo: PageInfo) {
+      super(ctx, pageInfo)
     }
-    static async _createInstance(payload: Record<string, any>) {
+    static async createInstance(payload: Record<string, any>) {
       const {
         data: {
           query: {
@@ -104,13 +104,13 @@ export const useWikiPage = useContext((ctx) => {
       return new WikiPageFactory(ctx, pageInfo)
     }
     static async newFromTitle(title: string, converttitles = false) {
-      return this._createInstance({ titles: title, converttitles })
+      return this.createInstance({ titles: title, converttitles })
     }
     static async newFromPageId(pageid: number) {
-      return this._createInstance({ pageids: pageid })
+      return this.createInstance({ pageids: pageid })
     }
     static async newFromRevision(revid: number) {
-      return this._createInstance({ revids: revid })
+      return this.createInstance({ revids: revid })
     }
   }
 })
