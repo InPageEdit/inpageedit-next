@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@prettier/plugin-pug": "^2.4.1",
-    "@types/node": "^18.14.6",
+    "@types/node": "^20.2.5",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "eslint": "^8.35.0",
