@@ -1,5 +1,5 @@
 import type { PageInfo } from './types/PageInfo'
-import type { MwApiParams } from 'mediawiki-api-axios'
+import type { MwApiParams } from 'wiki-saikou'
 import { Context } from 'cordis'
 
 type WatchlistType = 'preferences' | 'watch' | 'unwatch' | 'nochange'
@@ -65,14 +65,19 @@ class WikiPageFactory {
     })
     return parse
   }
-  async edit(payload: { text: string; summary?: string; watchlist?: WatchlistType }, params?: MwApiParams) {
-    const { text, summary = '', watchlist = 'preferences' } = payload
+  async edit(
+    payload: { text?: string; prependtext?: string; appendtext?: string; summary?: string; watchlist?: WatchlistType },
+    params?: MwApiParams
+  ) {
+    const { text, prependtext, appendtext, summary = '', watchlist = 'preferences' } = payload
     return this.ctx.api.postWithEditToken({
       action: 'edit',
       title: this.pageInfo.title,
       starttimestamp: this.pageInfo.touched,
       basetimestamp: this.pageInfo?.revisions?.[0].timestamp,
       text,
+      prependtext,
+      appendtext,
       summary,
       watchlist,
       ...params,

@@ -1,6 +1,10 @@
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import autoImport from 'unplugin-auto-import/vite'
+import vueComponents from 'unplugin-vue-components/vite'
 import dts from 'vite-plugin-dts'
+import { resolve } from 'path'
 
 export default defineConfig({
   build: {
@@ -19,5 +23,13 @@ export default defineConfig({
   define: {
     'process.env.NODE_ENV': '"production"',
   },
-  plugins: [dts()],
+  plugins: [
+    vue(),
+    vueJsx(),
+    autoImport({
+      imports: ['vue', 'pinia'],
+    }),
+    vueComponents(),
+    dts(),
+  ],
 })

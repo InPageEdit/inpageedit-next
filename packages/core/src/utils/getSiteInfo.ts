@@ -1,5 +1,5 @@
-import { MediaWikiApi, MediaWikiForeignApi } from 'mediawiki-api-axios'
-import { SiteInfo } from '../types/SiteInfo'
+import { MediaWikiApi, MediaWikiForeignApi } from 'wiki-saikou'
+import type { SiteInfo } from '../types/SiteInfo'
 
 export async function getSiteInfo(endpoint: string, isForeign = false): Promise<SiteInfo> {
   const api = !isForeign ? new MediaWikiApi(endpoint) : new MediaWikiForeignApi(endpoint)
