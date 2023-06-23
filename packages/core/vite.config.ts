@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import autoImport from 'unplugin-auto-import/vite'
 import vueComponents from 'unplugin-vue-components/vite'
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
 
@@ -29,7 +30,10 @@ export default defineConfig({
     autoImport({
       imports: ['vue', 'pinia'],
     }),
-    vueComponents(),
+    vueComponents({
+      dts: true,
+      resolvers: [NaiveUiResolver()],
+    }),
     dts(),
   ],
 })

@@ -22,6 +22,7 @@
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "cordis": "^2.8.0",
     "fish-store": "^1.0.1",
+    "naive-ui": "^2.34.4",
     "pinia": "^2.1.4",
     "pug": "^3.0.2",
     "sass": "^1.63.6",

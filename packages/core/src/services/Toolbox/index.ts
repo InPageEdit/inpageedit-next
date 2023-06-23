@@ -1,3 +1,4 @@
+import { type App as VueApp } from 'vue'
 import type { InPageEdit } from '@/index'
 import { Service } from 'cordis'
 import App from './App.vue'
@@ -10,12 +11,13 @@ declare module 'cordis' {
 }
 
 export class ToolboxService extends Service {
-  readonly app = createApp(App)
+  readonly app: VueApp
   readonly rootElement = document.createElement('div')
   readonly pinia = createPinia()
 
   constructor(readonly ctx: InPageEdit) {
     super(ctx, 'toolbox')
+    this.app = createApp(App, { ctx })
   }
 
   start(): void | Promise<void> {

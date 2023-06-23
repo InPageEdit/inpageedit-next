@@ -2,15 +2,18 @@
 .ipe-toolbox(:data-options='JSON.stringify(store.options)', :data-cur-name='store.curName')
   .ipe-toolbox-container
     .ipe-toolbox-body(v-if='store.isShow')
-      .ipe-toolbox-item(v-for='(item, index) in store.curOptions', :key='index')
-        a(@click='handleClick(item)') {{ item.label }}
-    .ipe-toolbox-toggler
-      a(@click='store.toggle()') {{ store.isShow ? '－' : '＋' }}
+      a.ipe-toolbox-item(v-for='(item, index) in store.curOptions', :key='index', @click='handleClick(item)') {{ item.label }}
+    a.ipe-toolbox-toggler(@click='store.toggle()') {{ store.isShow ? '－' : '＋' }}
 </template>
 
 <script setup lang="ts">
 import {} from 'vue'
 import { useToolboxStore, type ToolboxOption } from './states/toolbox'
+import type { InPageEdit } from '@/index'
+
+const props = defineProps<{
+  ctx: InPageEdit
+}>()
 
 const store = useToolboxStore()
 
@@ -29,7 +32,12 @@ onMounted(() => {
     label: '测试',
     icon: () => h('span', '测试'),
     action: () => {
-      console.log('test')
+      const page = props.ctx.modalManager.states.pages.addPage({
+        label: '测试',
+        component: () => h('div', '测试'),
+      })
+      props.ctx.modalManager.states.pages.setIndexById(page.id)
+      props.ctx.modalManager.states.modal.show()
     },
   })
 })
