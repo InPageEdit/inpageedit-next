@@ -2,12 +2,21 @@ import type { PageInfo } from './types/PageInfo'
 import type { MwApiParams } from 'wiki-saikou'
 import { Context } from 'cordis'
 
+declare module 'cordis' {
+  interface Context {
+    WikiPage: typeof WikiPage
+  }
+}
+
 type WatchlistType = 'preferences' | 'watch' | 'unwatch' | 'nochange'
 
 class WikiPageFactory {
   #currentRevid?: number
 
-  constructor(public ctx: Context, public pageInfo: PageInfo) {
+  constructor(
+    public ctx: Context,
+    public pageInfo: PageInfo
+  ) {
     this.#currentRevid = pageInfo?.revisions?.[0].revid
   }
 
@@ -106,10 +115,13 @@ export class WikiPage extends WikiPageFactory {
   static newFromRevision: (revid: number, converttitles?: boolean) => Promise<WikiPage>
 }
 
-Context.service('WikiPage')
 export class WikiPageService {
-  constructor(public ctx: Context, public options?: any) {
-    ctx.WikiPage = class extends WikiPageFactory implements WikiPage {
+  constructor(
+    public ctx: Context,
+    public options?: any
+  ) {
+    ctx.root.provide('WikiPage')
+    ctx.root.WikiPage = class extends WikiPageFactory implements WikiPage {
       constructor(public pageInfo: PageInfo) {
         super(ctx, pageInfo)
       }

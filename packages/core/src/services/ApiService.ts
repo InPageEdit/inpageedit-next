@@ -1,15 +1,24 @@
 import { Context } from 'cordis'
 import { MediaWikiApi, MediaWikiForeignApi } from 'wiki-saikou'
 
+declare module 'cordis' {
+  interface Context {
+    api: MediaWikiApi
+  }
+}
+
 export type Config = { isForeign?: boolean }
 
-Context.service('api')
 export class ApiService {
-  static using = ['url']
+  static inject = ['url']
 
-  constructor(public ctx: Context, options: Config) {
+  constructor(
+    public ctx: Context,
+    options: Config
+  ) {
     const endpoint = ctx.url.getScript('api')
-    ctx.api = !options.isForeign ? new MediaWikiApi(endpoint) : new MediaWikiForeignApi(endpoint)
+    ctx.root.provide('api')
+    ctx.root.api = !options.isForeign ? new MediaWikiApi(endpoint) : new MediaWikiForeignApi(endpoint)
     console.info('ApiService', 'installed', ctx.api)
   }
 }
